@@ -1,0 +1,6 @@
+python-dotenv
+quart
+spotipy
+httpx
+pypresence
+hypercorn
