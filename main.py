@@ -17,7 +17,7 @@ load_dotenv()
 CLIENT_ID = os.getenv("SPOTIPY_CLIENT_ID")
 CLIENT_SECRET = os.getenv("SPOTIPY_CLIENT_SECRET")
 REDIRECT_URI = "http://127.0.0.1:8888/callback"
-scope="user-read-playback-state user-read-currently-playing playlist-read-private"
+scope="user-read-playback-state user-read-currently-playing"
 
 # === GLOBAL STATE ==
 rpc = DiscordRPCWrapper(os.getenv("DISCORD_APP_ID"))
