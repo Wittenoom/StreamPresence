@@ -159,10 +159,17 @@ def presence_sync_worker(sync_queue: Queue, sync_stop_event: Event):
             if len(state) > 100:
                 state = state[:100] + "..."
             last_line = future_lines[-1]
+
+            real_now = time.time()
+            progress_s = progress_ms / 1000
+
+            start = int(real_now - progress_s)  # when the song actually started
+            end = int(start + track_duration / 1000)  # song end in epoch time
+
             rpc.update_presence(
                 state=state or "🎵",
-                start=int(start_time_ns // 1_000_000_000),
-                end=int((start_time_ns // 1_000_000 + track_duration) // 1000),
+                start=start,
+                end=end,
                 large_image="spotify_app_logo_svg",
                 large_text=album_name,
                 details="Lyrics"
