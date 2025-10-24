@@ -1,9 +1,9 @@
 import httpx
-from src.exceptions import TrackNotFound, RequestFailed
+from exceptions import TrackNotFound, RequestFailed
 
 DEFAULT_HOST = "https://lrclib.net"
 DEFAULT_HEADERS = {
-    "User-Agent": "lrcdl v0.2.11 (https://github.com/viown/lrcdl)"
+    "User-Agent": "StreamPresence v0.2.0 (https://github.com/Wittenoom/StreamPresence)"
 }
 
 def get_lyrics(keywords: str):

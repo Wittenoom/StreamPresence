@@ -3,3 +3,4 @@ __pycache__
 goofy.py
 src/main.py
 envs/*
+logs/*
