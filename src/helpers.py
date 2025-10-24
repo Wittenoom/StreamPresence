@@ -1,7 +1,7 @@
 import time
 from queue import Queue, Empty
 from threading import Event
-import src.LRCHelpers as LRCHelpers
+import LRCHelpers as LRCHelpers
 
 
 # --- SentenceTransformer Helper ---
