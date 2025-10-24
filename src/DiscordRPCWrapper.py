@@ -6,7 +6,6 @@ from concurrent.futures import ThreadPoolExecutor
 from threading import Event
 
 
-
 class DiscordRPCWrapper:
     def __init__(self, client_id: str, update_interval: float = 15.0):
         self.client_id = client_id
@@ -25,24 +24,25 @@ class DiscordRPCWrapper:
         return decorator
 
     def start(self):
-        self._running.set()
-        self._executor.submit(self._run)
+        if not self._running.is_set():
+            self._running.set()
+            self._executor.submit(self._run)
 
     def stop(self):
+        """Stop RPC cleanly."""
         self._running.clear()
+        # Put a sentinel to unblock the queue immediately
         self._queue.put(None)
-        if self._rpc:
-            try:
-                self._rpc.clear()
-                self._rpc.close()
-            except Exception:
-                pass
+        # Wait for the thread to exit
         self._executor.shutdown(wait=True)
 
     def update_presence(self, **kwargs):
-        self._queue.put(kwargs)
+        """Thread-safe synchronous enqueue for updating presence."""
+        if self._running.is_set():
+            self._queue.put(kwargs)
 
     def _run(self):
+        """Internal thread loop."""
         while self._running.is_set():
             try:
                 self._rpc = Presence(self.client_id)
@@ -57,7 +57,8 @@ class DiscordRPCWrapper:
 
             while self._running.is_set():
                 try:
-                    payload = self._queue.get(timeout=self.update_interval)
+                    # Timeout ensures we periodically check _running
+                    payload = self._queue.get(timeout=0.5)
                     if payload is None:
                         break
                     self._rpc.update(**payload)
@@ -72,9 +73,14 @@ class DiscordRPCWrapper:
                         self._event_hooks["on_error"](e)
                     break
 
-            try:
-                self._rpc.close()
-            except Exception:
-                pass
+            # Clean up RPC connection
+            if self._rpc:
+                try:
+                    self._rpc.clear()
+                    self._rpc.close()
+                except Exception:
+                    pass
+                self._rpc = None
 
-            time.sleep(2)
+            # Short sleep to avoid busy loop if restarting
+            time.sleep(1)

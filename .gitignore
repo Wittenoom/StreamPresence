@@ -1,5 +1,5 @@
-.env
 .idea
 __pycache__
-.cache
 goofy.py
+src/main.py
+envs/*

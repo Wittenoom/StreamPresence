@@ -1,5 +1,5 @@
 import httpx
-from exceptions import TrackNotFound, RequestFailed
+from src.exceptions import TrackNotFound, RequestFailed
 
 DEFAULT_HOST = "https://lrclib.net"
 DEFAULT_HEADERS = {
