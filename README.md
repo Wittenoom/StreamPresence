@@ -43,7 +43,7 @@ DISCORD_APP_ID=your_discord_application_id
 4. Start the application:
 
 ```bash
-uvicorn src.main:app --host 127.0.0.1 --port 8888
+python src/main.py
 ```
 Make sure to run the command in project root, Not in src directory
 

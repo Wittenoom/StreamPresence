@@ -4,7 +4,7 @@ from asyncio import Event
 from dotenv import load_dotenv
 from spotipy import SpotifyOAuth, Spotify
 from quart import Quart, redirect, request, url_for
-from src.EventSystem import ClientEvent
+from EventSystem import ClientEvent
 
 cache_dir = os.path.join(os.getcwd(), "envs")
 os.makedirs(cache_dir, exist_ok=True)  # create the folder if it doesn't exist
