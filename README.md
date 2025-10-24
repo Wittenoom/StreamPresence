@@ -32,7 +32,7 @@ cd StreamPresence
 pip install -r requirements.txt
 ```
 
-3. Create a `.env` file in the project root and configure it as follows:
+3. Create a `.env` file in envs and configure it as follows:
 
 ```env
 SPOTIPY_CLIENT_ID=your_spotify_client_id
@@ -43,8 +43,9 @@ DISCORD_APP_ID=your_discord_application_id
 4. Start the application:
 
 ```bash
-hypercorn main:app --bind 127.0.0.1:8888
+uvicorn src.main:app --host 127.0.0.1 --port 8888
 ```
+Make sure to run the command in project root, Not in src directory
 
 5. Open the printed URL in your browser and log in with your Spotify account to authorize the app.
 
