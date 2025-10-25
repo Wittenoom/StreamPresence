@@ -92,22 +92,22 @@ class StreamPresenceBackend:
         )
 
         parsed_lyrics = self._fetch_or_cache_lyrics(track_id, name, artist, album, duration)
+        if parsed_lyrics:
+            data = {
+                "parsed_lyrics": parsed_lyrics,
+                "progress": min(track_info["progress_ms"], duration),
+                "track_duration": duration,
+                "album_name": album
+            }
 
-        data = {
-            "parsed_lyrics": parsed_lyrics,
-            "progress": min(track_info["progress_ms"], duration),
-            "track_duration": duration,
-            "album_name": album
-        }
+            # Start worker threads if not running
+            if not self._workers_running():
+                self.lyric_process = Process(target=lyric_sync_worker, args=(self.sync_queue, self.stop_event))
+                self.presence_process = Thread(target=presence_sync_worker, args=(self.sync_queue, self.stop_event, self.rpc))
+                self.presence_process.start()
+                self.lyric_process.start()
 
-        # Start worker threads if not running
-        if not self._workers_running():
-            self.lyric_process = Process(target=lyric_sync_worker, args=(self.sync_queue, self.stop_event))
-            self.presence_process = Thread(target=presence_sync_worker, args=(self.sync_queue, self.stop_event, self.rpc))
-            self.presence_process.start()
-            self.lyric_process.start()
-
-        self.sync_queue.put(data)
+            self.sync_queue.put(data)
 
     def update(self, track_info):
         self.stop_event.clear()
