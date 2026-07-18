@@ -16,7 +16,7 @@ load_dotenv(dotenv_path=env_path)
 
 CLIENT_ID = os.getenv("SPOTIPY_CLIENT_ID")
 CLIENT_SECRET = os.getenv("SPOTIPY_CLIENT_SECRET")
-REDIRECT_URI = "http://127.0.0.1:8888/callback"
+REDIRECT_URI = "http://127.0.0.1:8080/callback"
 SCOPE = "user-read-playback-state user-read-currently-playing"
 
 app = Quart(__name__)
