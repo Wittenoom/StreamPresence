@@ -15,7 +15,7 @@ This project creates a **Discord Rich Presence** integration for Spotify with **
 * Python 3.8+
 * A Discord application with Rich Presence enabled
 * A registered Spotify Developer application with the redirect URI:
-  `http://127.0.0.1:8888/callback`
+  `http://127.0.0.1:8080/callback`
 
 ## Installation
 
